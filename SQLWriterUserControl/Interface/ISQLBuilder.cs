@@ -15,8 +15,8 @@ namespace SQLWriter.Interfaces
 		string InsertSQL(IList<PropertyEntity> columns, string tableName);
 		string DeleteSQL(IList<PropertyEntity> columns, string tableName);
 		string QuerySQL(IList<PropertyEntity> columns, string tableName);
-		string ConvertFileterToSQLString((string propertyName, string operatorStrig, object filteringValue) filter);
-		string ConvertFileterToSQLString(List<(string propertyName, string operatorStrig, object filteringValue)> filters);
+		string ConvertFileterToSQLString(SQLFilter filter);
+		string ConvertFileterToSQLString(List<SQLFilter> filters);
 		string GetRDBMSParameterName(PropertyInfo p);
 	}
 }

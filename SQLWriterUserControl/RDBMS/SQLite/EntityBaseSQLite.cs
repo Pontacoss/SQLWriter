@@ -74,12 +74,12 @@ namespace SQLWriter.RDBMS.SQLite
 			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query));
 		}
 
-		public List<T> Load<T>((string, string,object) filter) where T : class
+		public List<T> Load<T>(SQLFilter filter) where T : class
 		{
 			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filter));
 		}
 
-		public List<T> Load<T>(List<(string,string, object)> filters) where T : class
+		public List<T> Load<T>(List<SQLFilter> filters) where T : class
 		{
 			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filters));
 		}

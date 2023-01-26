@@ -261,11 +261,11 @@ namespace SQLWriter.InnerDb
 			return Query<T>(SQLStringSQLite.GetSQLWriterSQL(typeof(T).Name, EnumDbAction.Query));
 		}
 
-		internal static List<T> Load<T>((string propertyName, string operatorStrig,object filteringValue) filter) where T : class
+		internal static List<T> Load<T>(SQLFilter filter) where T : class
 		{
 			return Query<T>(SQLStringSQLite.GetSQLWriterSQL(typeof(T).Name, EnumDbAction.Query, filter));
 		}
-		internal static List<T> Load<T>(List<(string propertyName, string operatorStrig, object filteringValue)> filters) where T : class
+		internal static List<T> Load<T>(List<SQLFilter> filters) where T : class
 		{
 			return Query<T>(SQLStringSQLite.GetSQLWriterSQL(typeof(T).Name, EnumDbAction.Query, filters));
 		}
@@ -315,16 +315,16 @@ namespace SQLWriter.InnerDb
 
 		internal static List<PropertyEntity> GetPrimaryKeys(Type entity)
 		{
-			var p = new List<(string, string, object)>();
-			p.Add((nameof(PropertyEntity.EntityName), "=", entity.Name));
-			p.Add((nameof(PropertyEntity.IsPrimaryKey), "=", true));
+			var p = new List<SQLFilter>();
+			p.Add(new SQLFilter(nameof(PropertyEntity.EntityName), entity.Name));
+			p.Add(new SQLFilter(nameof(PropertyEntity.IsPrimaryKey), true));
 
 			return Load<PropertyEntity>(p);
 		}
 
 		internal static string GetTableName(Type type)
 		{
-			var f = (nameof(ClassInfoEntity.ClassName), "=", type.Name);
+			var f =new SQLFilter(nameof(ClassInfoEntity.ClassName), type.Name);
 			var entity = Load<ClassInfoEntity>(f);
 			if (entity.Count == 0) return type.Name.Replace("Entity", "");
 			return entity.First().TableName;

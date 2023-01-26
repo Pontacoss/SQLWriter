@@ -10,17 +10,16 @@ namespace SQLWriter.InnerDb
 {
 	internal class SQLStringSQLite
 	{
-		internal static string GetSQLWriterSQL(string entityName, EnumDbAction action,
-			(string propertyName, string operatorStrig, object filteringValue) filter)
+		internal static string GetSQLWriterSQL(string entityName, EnumDbAction action, SQLFilter filter)
 		{
-			var list = new List<(string propertyName, string operatorStrig, object filteringValue)>();
+			var list = new List<SQLFilter>();
 			list.Add(filter);
 
 			return GetSQLWriterSQL(entityName, action, list);
 		}
 
 		internal static string GetSQLWriterSQL(string entityName, EnumDbAction action, 
-			List<(string propertyName, string operatorStrig, object filteringValue)> filters)
+			List<SQLFilter> filters)
 		{
 			var str = GetSQLWriterSQL(entityName, action);
 			var sql = str + SQLWriterHelper.GetSQLString(SQLWriterHelper.RDBMS).ConvertFileterToSQLString(filters);
@@ -56,10 +55,10 @@ namespace SQLWriter.InnerDb
 		{
 			var tableName = GetTableName(rdbms, entityName);
 
-			var p = new List<(string,string,object)>();
-			p.Add((nameof(SQLStringEntity.Rdbms), "=",(int)rdbms));
-			p.Add((nameof(SQLStringEntity.TableName), "=", tableName));
-			p.Add((nameof(SQLStringEntity.Action), "=", (int)action));
+			var p = new List<SQLFilter>();
+			p.Add(new SQLFilter(nameof(SQLStringEntity.Rdbms), (int)rdbms));
+			p.Add(new SQLFilter(nameof(SQLStringEntity.TableName), tableName));
+			p.Add(new SQLFilter(nameof(SQLStringEntity.Action), (int)action));
 
 			var entity = SQLWriterHelper.Load<SQLStringEntity>(p).SingleOrDefault();
 
@@ -76,10 +75,9 @@ namespace SQLWriter.InnerDb
 		/// <param name="action">DBAction.Create,DBAction.Update,DBAction.Insert,DBAction.Delete,DBAction.Queryから選択</param>
 		/// <param name="filter">検索対象プロパティの名称、演算子、値 をタプルで設定。</param>
 		/// <returns></returns>
-		internal static string GetSQL(EnumRdbms rdbms, string entityName, EnumDbAction action,
-			(string propertyName, string operatorStrig, object filteringValue) filter)
+		internal static string GetSQL(EnumRdbms rdbms, string entityName, EnumDbAction action, SQLFilter filter)
 		{
-			var list = new List<(string propertyName, string operatorStrig, object filteringValue)>();
+			var list = new List<SQLFilter>();
 			list.Add(filter);
 
 			return GetSQL(rdbms, entityName, action, list);
@@ -94,7 +92,7 @@ namespace SQLWriter.InnerDb
 		/// <param name="filters">検索対象プロパティの名称、演算子、値 をタプルで設定。</param>
 		/// <returns></returns>
 		internal static string GetSQL(EnumRdbms rdbms, string entityName, EnumDbAction action,
-			List<(string propertyName, string operatorStrig, object filteringValue)> filters)
+			List<SQLFilter> filters)
 		{
 			var str = GetSQL(rdbms, entityName, action);
 			var sql = str + SQLWriterHelper.GetSQLString(rdbms).ConvertFileterToSQLString(filters);
@@ -112,7 +110,7 @@ namespace SQLWriter.InnerDb
 
 		private static string GetTableName(EnumRdbms rdbms, string entityName)
 		{
-			var q = (nameof(ClassInfoEntity.ClassName), "=", entityName);
+			var q =new SQLFilter(nameof(ClassInfoEntity.ClassName), entityName);
 			//var sql = GetSqlString(typeof(SQLWriterClassInfoEntity)).Query 
 			//	+ SQLWriterFactory.GetSQLString(SQLWriterHelper.RDBMS).ConvertFileterToSQLString(q);
 

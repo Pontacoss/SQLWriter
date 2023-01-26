@@ -22,14 +22,14 @@ namespace SQLWriter.Repositories
 		/// <typeparam name="T"></typeparam>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		List<T> Load<T>((string parameterName, string operatorStrig, object filteringValue) filter) where T : class;
+		List<T> Load<T>(SQLFilter filter) where T : class;
 		/// <summary>
 		/// Queryの実行。Filterが複数ある場合。
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="filters"></param>
 		/// <returns></returns>
-		List<T> Load<T>(List<(string parameterName, string operatorStrig, object filteringValue)> filters) where T : class;
+		List<T> Load<T>(List<SQLFilter> filter) where T : class;
 
 	}
 }

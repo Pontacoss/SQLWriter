@@ -134,25 +134,26 @@ namespace SQLWriter.RDBMS.SQLite
 
 			return sb.ToString();
 		}
-		public string ConvertFileterToSQLString((string propertyName, string operatorStrig, object filteringValue) filter)
+		public string ConvertFileterToSQLString(SQLFilter filter)
 		{
-			var filters = new List<(string propertyName, string operatorStrig, object filteringValue)>();
+			var filters = new List<SQLFilter>();
 			filters.Add(filter);
 
 			return ConvertFileterToSQLString(filters);
 		}
 
-		public string ConvertFileterToSQLString(List<(string propertyName, string operatorStrig, object filteringValue)> filters)
+		public string ConvertFileterToSQLString(List<SQLFilter> filters)
 		{
 			var sb = new StringBuilder();
 
 			sb.Append(" where (");
-			foreach (var filter in filters)
-			{ 
-				if (bool.TryParse(filter.filteringValue.ToString(), out bool result))
-					sb.Append("[" + filter.propertyName + "]" + filter.operatorStrig  + result + " and ");
+			foreach (SQLFilter filter in filters)
+			{
+				// todo : bool 変換
+				if (bool.TryParse(filter.Value.ToString(), out bool result))
+					sb.Append("[" + filter.Name + "]" + filter.Operator + "" + result + " and ");
 				else
-					sb.Append("[" + filter.propertyName + "]" + filter.operatorStrig + "\'" + filter.filteringValue + "\' and ");
+					sb.Append("[" + filter.Name + "]" + filter.Operator + "\'" + filter.Value + "\' and ");
 			}
 			sb.Length -= 4;
 			sb.Append(")");

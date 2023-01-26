@@ -129,7 +129,7 @@ namespace SQLWriter
 		public DelegateCommand ClassSelectionChanged { get; }
 		private void ClassSelectionChangedExecute()
 		{
-			var p = (nameof(PropertyEntity.EntityName), "=", SelectedClass.Name);
+			var p = new SQLFilter(nameof(PropertyEntity.EntityName), SelectedClass.Name);
 			var propDBValue = SQLWriterHelper.Load<PropertyEntity>(p);
 			SelectedClassInfo = new ClassInfoEntity(SelectedClass);
 			ColumnInfos.Clear();
