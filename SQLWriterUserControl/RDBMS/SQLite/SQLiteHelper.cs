@@ -132,7 +132,7 @@ namespace SQLWriter.RDBMS.SQLite
 
 		internal static int Delete<T>(T x)
 		{
-			var sql = SQLStringSQLite.GetSQL(RDBMS, nameof(T), EnumDbAction.Delete);
+			var sql = SQLStringSQLite.GetSQL(RDBMS,x.GetType().Name, EnumDbAction.Delete);
 			var parameters = GetSQLiteParameters(x);
 
 			using (var connection = new SQLiteConnection(ConnectionString))

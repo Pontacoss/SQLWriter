@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using SQLWriter.Entities;
 using SQLWriter.InnerDb;
 using SQLWriter.RDBMS.SQLite;
@@ -13,7 +14,8 @@ using System.Windows;
 
 namespace SQLWriter
 {
-	public class SQLWriterTableSettingViewModel:BindableBase
+	[RegionMemberLifetime(KeepAlive = true)]
+	public class SQLWriterTableSettingViewModel:BindableBase ,INavigationAware
 	{
 		public static string Title => "SQL Writer";
 
@@ -64,6 +66,18 @@ namespace SQLWriter
 			CreateTableButton_Click = new DelegateCommand(CreateTableButton_ClickExecute);
 			ResetSQLWriterTableButton_Click = new DelegateCommand(ResetSQLWriterTableButton_ClickExecute);
 			ClassList = ClassInfoEntity.GetAllClassList();
+			constructorCounter++;
+			Console.WriteLine("SQLWriterTableSettingViewModel Constructor" + constructorCounter);
+
+		}
+
+		private static int constructorCounter = 0;
+		private static int destructorCounter = 0;
+
+		~SQLWriterTableSettingViewModel()
+		{
+			destructorCounter++;
+			Console.WriteLine("SQLWriterTableSettingViewModel Destructor" + destructorCounter);
 		}
 		#endregion
 		public DelegateCommand ResetSQLWriterTableButton_Click { get; }
@@ -142,6 +156,16 @@ namespace SQLWriter
 
 			TableName = SelectedClassInfo.TableName;
 			SQLTextBox = string.Empty;
+		}
+
+		public void OnNavigatedTo(NavigationContext navigationContext)
+		{
+		}
+
+		public bool IsNavigationTarget(NavigationContext navigationContext) => true;
+
+		public void OnNavigatedFrom(NavigationContext navigationContext)
+		{
 		}
 	}
 }

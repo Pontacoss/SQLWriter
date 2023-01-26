@@ -12,7 +12,6 @@ namespace DebugProject.ViewModels
 		{
 			_regionManager = regionManager;
 			_regionManager.RegisterViewWithRegion("ContentRegion", nameof(SQLWriterTableSettingView));
-
 		}
 	}
 }

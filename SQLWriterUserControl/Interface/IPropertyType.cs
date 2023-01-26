@@ -22,7 +22,8 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToInt32(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToInt32(readerValue));
+			=> p.SetValue(x, readerValue == null ? 0 : Convert.ToInt32(readerValue));
+		
 	}
 	internal sealed class TypeInt64 : IPropertyType
 	{
@@ -31,7 +32,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToInt64(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToInt64(readerValue));
+			=> p.SetValue(x, readerValue == null ? 0 : Convert.ToInt64(readerValue));
 	}
 	internal sealed class TypeString : IPropertyType
 	{
@@ -40,7 +41,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> p.GetValue(x).ToString();
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, readerValue.ToString());
+			=> p.SetValue(x, readerValue == null ? null : readerValue.ToString());
 	}
 	internal sealed class TypeBoolean : IPropertyType
 	{
@@ -49,7 +50,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToBoolean(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToBoolean(readerValue));
+			=> p.SetValue(x, readerValue == null ? false : Convert.ToBoolean(readerValue));
 	}
 	internal sealed class TypeEnum : IPropertyType
 	{
@@ -58,7 +59,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToInt32(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToInt32(readerValue));
+			=> p.SetValue(x, readerValue == null ? 0 : Convert.ToInt32(readerValue));
 	}
 	internal sealed class TypeFloat : IPropertyType
 	{
@@ -67,7 +68,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToSingle(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToSingle(readerValue));
+			=> p.SetValue(x, readerValue == null ? 0 : Convert.ToSingle(readerValue));
 	}
 	internal sealed class TypeDouble : IPropertyType
 	{
@@ -76,7 +77,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToDouble(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToDouble(readerValue));
+			=> p.SetValue(x, readerValue == null ? 0 : Convert.ToDouble(readerValue));
 	}
 	internal sealed class TypeDateTime : IPropertyType
 	{
@@ -85,7 +86,7 @@ namespace SQLWriter.Interfaces
 		public object GetValueAccordingToType<T>(PropertyInfo p, T x)
 			=> Convert.ToDateTime(p.GetValue(x));
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
-			=> p.SetValue(x, Convert.ToDateTime(readerValue));
+			=> p.SetValue(x, readerValue == null ? DateTime.MinValue : Convert.ToDateTime(readerValue));
 	}
 
 	internal sealed class TypeValueObjectInt32 : IPropertyType
@@ -102,6 +103,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if(readerValue==null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(int) });
 			if (constructor == null) 
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -122,6 +128,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(long) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -142,6 +153,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(string) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -162,6 +178,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(bool) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -182,6 +203,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(DateTime) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -202,6 +228,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(float) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -222,6 +253,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var constructor = p.PropertyType.GetConstructor(new Type[] { typeof(double) });
 			if (constructor == null)
 				throw new NotExistDefaultConstractorException(p.PropertyType.BaseType, p.PropertyType.Name);
@@ -239,6 +275,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var list = readerValue.ToString().Split(',').ToList();
 
 			var list1 = new List<int>();
@@ -260,6 +301,11 @@ namespace SQLWriter.Interfaces
 		}
 		public void SetValueIntoInstance(object x, PropertyInfo p, object readerValue)
 		{
+			if (readerValue == null)
+			{
+				p.SetValue(x, null);
+				return;
+			}
 			var list = readerValue.ToString().Split(',').ToList();
 			p.SetValue(x, list);
 		}

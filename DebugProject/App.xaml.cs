@@ -17,7 +17,9 @@ namespace DebugProject
 		{
 
 			SQLWriterFacade.SetReferenceToDomain
-				(" FullPath for Domain ", "Domain.dll",	" namespace "); // please rewrite
+				(@"C:\Users\EY28754\source\repos\WpfApp2\WpfApp2.WPFForm2\bin\Debug\"
+				, "WpfApp2.Domain.dll"
+				, "WpfApp2.Domain.Entities"); // please rewrite
 
 		}
 
