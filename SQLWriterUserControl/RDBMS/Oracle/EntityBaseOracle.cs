@@ -6,18 +6,18 @@ using SQLWriter.Repositories;
 
 namespace SQLWriter.RDBMS.SQLite
 {
-	internal class EntityBaseSQLite : ISQLWriterRepository
+	internal class EntityBaseOracle : ISQLWriterRepository
 	{
 		static readonly EnumRdbms RDBMS = EnumRdbms.SQLite;
 
 		public void Delete<T>(T x) where T : class
 		{
-			SQLiteHelper.Delete(x);
+			OracleHelper.Delete(x);
 		}
 
 		public int Update<T>(T x) where T : class
 		{
-			return SQLiteHelper.Update(x);
+			return OracleHelper.Update(x);
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace SQLWriter.RDBMS.SQLite
 		/// <returns>Insertに失敗した場合 0、成功した場合は挿入された行のROWIDを返却。</returns>
 		public int Insert<T>(T x) where T : class
 		{
-			var intVal = SQLiteHelper.Insert(x);
+			var intVal = OracleHelper.Insert(x);
 			if (intVal == 0) return 0;
 			var type = x.GetType();
 
@@ -48,7 +48,7 @@ namespace SQLWriter.RDBMS.SQLite
 		}
 		public int Save<T>(T x) where T : class
 		{
-			var intVal = SQLiteHelper.Execute(x);
+			var intVal = OracleHelper.Execute(x);
 
 			if (intVal == 0) return 0;
 
@@ -71,17 +71,17 @@ namespace SQLWriter.RDBMS.SQLite
 		}
 		public List<T> Load<T>() where T : class
 		{
-			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query));
+			return OracleHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query));
 		}
 
 		public List<T> Load<T>(SQLFilter filter) where T : class
 		{
-			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filter));
+			return OracleHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filter));
 		}
 
 		public List<T> Load<T>(List<SQLFilter> filters) where T : class
 		{
-			return SQLiteHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filters));
+			return OracleHelper.Query<T>(SQLStringSQLite.GetSQL(RDBMS, typeof(T).Name, EnumDbAction.Query, filters));
 		}
 
 		public List<T> Query<T>(string sql) where T : class

@@ -7,6 +7,7 @@ using SQLWriter.RDBMS.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,20 +67,11 @@ namespace SQLWriter
 			CreateTableButton_Click = new DelegateCommand(CreateTableButton_ClickExecute);
 			ResetSQLWriterTableButton_Click = new DelegateCommand(ResetSQLWriterTableButton_ClickExecute);
 			ClassList = ClassInfoEntity.GetAllClassList();
-			constructorCounter++;
-			Console.WriteLine("SQLWriterTableSettingViewModel Constructor" + constructorCounter);
+			
 
-		}
-
-		private static int constructorCounter = 0;
-		private static int destructorCounter = 0;
-
-		~SQLWriterTableSettingViewModel()
-		{
-			destructorCounter++;
-			Console.WriteLine("SQLWriterTableSettingViewModel Destructor" + destructorCounter);
 		}
 		#endregion
+
 		public DelegateCommand ResetSQLWriterTableButton_Click { get; }
 		private void ResetSQLWriterTableButton_ClickExecute()
 		{
@@ -134,22 +126,37 @@ namespace SQLWriter
 			SelectedClassInfo = new ClassInfoEntity(SelectedClass);
 			ColumnInfos.Clear();
 
-			var propertyInfo = SQLWriterHelper.GetPropertyList(SelectedClass);
+			var propertySetting = SQLWriterHelper.GetPropertyList(SelectedClass);
+
+			var type = Type.GetType(SelectedClass.AssemblyQualifiedName);
 
 			// プロパティの設定値について前回設定値があれば引用
-			foreach (var prop in propertyInfo)
+			foreach (var prop in propertySetting)
 			{
+				
 				if (propDBValue != null)
 				{
-					var previusValue = propDBValue.Where(x => x.Name == prop.Name).FirstOrDefault();
+					var previusValue = propDBValue
+						.Where(x => x.Name == prop.Name).FirstOrDefault();
 					if (previusValue != null)
 					{
 						prop.IsPrimaryKey = previusValue.IsPrimaryKey;
 						prop.IsAutoincrement = previusValue.IsAutoincrement;
 						prop.IsUnique = previusValue.IsUnique;
 						prop.WordCount = previusValue.WordCount;
-						//prop.Id = previusValue.Id;
 					}
+
+					//文字数制限に関しては、
+					//System.ComponentModel.DataAnnotationsによる
+					//Domain側での設定を優先する。
+					if (Attribute.GetCustomAttribute(
+						type.GetProperty(prop.Name), 
+						typeof(StringLengthAttribute))
+						is StringLengthAttribute lenAttr)
+					{
+						prop.WordCount = lenAttr.MaximumLength;
+					}
+
 				}
 				ColumnInfos.Add(prop);
 			}

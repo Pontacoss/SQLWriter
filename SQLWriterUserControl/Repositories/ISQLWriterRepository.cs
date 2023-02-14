@@ -31,5 +31,7 @@ namespace SQLWriter.Repositories
 		/// <returns></returns>
 		List<T> Load<T>(List<SQLFilter> filter) where T : class;
 
+
+		List<T> Query<T>(string sql) where T : class;
 	}
 }

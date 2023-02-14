@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\ClassInfoEntity.cs" />
+    <Compile Include="Entities\DatabaseInfoEntity.cs" />
     <Compile Include="Entities\PropertyEntity.cs" />
     <Compile Include="Entities\SQLStringEntity.cs" />
     <Compile Include="Exceptions\CallUnregisteredTableException.cs" />
@@ -104,6 +105,13 @@
     <Compile Include="Exceptions\ValueObjectNotExistValueException.cs" />
     <Compile Include="Exceptions\ValueObjectValueException.cs" />
     <Compile Include="Exceptions\ValuObjectProprtyException.cs" />
+    <Compile Include="RDBMS\Oracle\EntityBaseOracle.cs" />
+    <Compile Include="RDBMS\Oracle\SQLBuilderOracle.cs" />
+    <Compile Include="RDBMS\Oracle\OracleHelper.cs" />
+    <Compile Include="SQLWriterDatabaseSettingView.xaml.cs">
+      <DependentUpon>SQLWriterDatabaseSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SQLWriterDatabaseSettingViewModel.cs" />
     <Compile Include="SQLWriterFactory.cs" />
     <Compile Include="InnerDb\IGetSqlStringSQLite.cs" />
     <Compile Include="InnerDb\SQLWriterHelper.cs" />
@@ -147,14 +155,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="SQLWriterDatabaseSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SQLWriterTableSettingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RDBMS\Oracle\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

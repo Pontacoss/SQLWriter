@@ -10,7 +10,7 @@ using SQLWriter.RDBMS.SQLite;
 
 namespace SQLWriter.InnerDb
 {
-	internal class SQLWriterHelper 
+	internal static class SQLWriterHelper 
 	{
 		static readonly string dataBaseName = "SQLWriter.db";
 		static readonly string fullPath = Assembly.GetExecutingAssembly().Location;

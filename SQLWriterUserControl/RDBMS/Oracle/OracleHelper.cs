@@ -10,12 +10,11 @@ using System.Windows;
 
 namespace SQLWriter.RDBMS.SQLite
 {
-	internal static class SQLiteHelper
+	internal static class OracleHelper
 	{
 		static readonly string dataBaseName = "WpfAppSQLite.db";
 		static readonly string fullPath = Assembly.GetExecutingAssembly().Location;
 		static readonly string appPath = Path.GetDirectoryName(fullPath);
-		//static readonly string appPath = SQLWriterFacade.AssemblyFilePath;
 		static string DataBasePath = Path.Combine(appPath, dataBaseName);
 		static readonly string ConnectionString = @"Data Source=" + DataBasePath + ";Version=3;";
 		static readonly EnumRdbms RDBMS = EnumRdbms.SQLite;
