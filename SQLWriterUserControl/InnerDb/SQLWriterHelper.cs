@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using SQLWriter.Entities;
 using SQLWriter.Interfaces;
 using SQLWriter.RDBMS.SQLite;
@@ -13,10 +12,11 @@ namespace SQLWriter.InnerDb
 	internal static class SQLWriterHelper 
 	{
 		static readonly string dataBaseName = "SQLWriter.db";
-		static readonly string fullPath = Assembly.GetExecutingAssembly().Location;
-		static readonly string appPath = Path.GetDirectoryName(fullPath);
-		//static readonly string appPath = SQLWriterFacade.AssemblyFilePath;
-		static string DataBasePath = Path.Combine(appPath, dataBaseName);
+		static readonly string fullPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+			@"\MitsubishiElectric\" + System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+		//Assembly.GetExecutingAssembly().Location;
+		//static readonly string appPath = Path.GetDirectoryName(fullPath);
+		static string DataBasePath = Path.Combine(fullPath, dataBaseName);
 		static readonly string ConnectionString = @"Data Source=" + DataBasePath + ";Version=3;";
 		internal static readonly EnumRdbms RDBMS = EnumRdbms.SQLite;
 
@@ -291,6 +291,11 @@ namespace SQLWriter.InnerDb
 
 		internal static void InitializeSQLWriterDB()
 		{
+			if (!System.IO.Directory.Exists(fullPath))
+			{
+				Directory.CreateDirectory(fullPath);
+			}
+
 			using (SQLiteConnection con = new SQLiteConnection(ConnectionString))
 			{
 				con.Open();
@@ -304,10 +309,14 @@ namespace SQLWriter.InnerDb
 					{
 						com.ExecuteNonQuery();
 					}
-					using (SQLiteCommand com = new SQLiteCommand(
-						SQLStringSQLite.GetSQLWriterSQL(cls.Name, EnumDbAction.Create), con))
+					sql = SQLStringSQLite.GetSQLWriterSQL(cls.Name, EnumDbAction.Create);
+					if (sql != null)
 					{
-						com.ExecuteNonQuery();
+						using (SQLiteCommand com = new SQLiteCommand(
+							sql, con))
+						{
+							com.ExecuteNonQuery();
+						}
 					}
 				}
 			}

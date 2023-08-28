@@ -3,6 +3,7 @@ using Prism.Ioc;
 using SQLWriter;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -16,10 +17,10 @@ namespace DebugProject
 		public App()
 		{
 
-			SQLWriterFacade.SetReferenceToDomain
-				(@"C:\Users\EY28754\source\repos\WpfApp2\WpfApp2.WPFForm2\bin\Debug\"
-				, "WpfApp2.Domain.dll"
-				, "WpfApp2.Domain.Entities"); // please rewrite
+			SQLWriterFacade.SetReferenceToDomain(
+				@"C:\Users\EY28754\source\repos\WpfApp2\WpfApp2.WPFForm2\bin\Debug\",
+				"WpfApp2.Domain.dll",
+				"WpfApp2.Domain.Entities"); // please rewrite
 
 		}
 

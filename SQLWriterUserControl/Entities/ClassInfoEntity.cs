@@ -45,8 +45,8 @@ namespace SQLWriter.Entities
 			{
 				throw new NotYetSettingsException();
 			}
-			Assembly assm = Assembly.LoadFrom(SQLWriterFacade.AssemblyFilePath 
-				+ SQLWriterFacade.AssemblyFile);
+			Assembly assm = Assembly.LoadFrom(SQLWriterFacade.AssemblyFilePath + 
+				SQLWriterFacade.AssemblyFile);
 
 			var types = assm.GetTypes()
 				.Where(t => t.Namespace != null)

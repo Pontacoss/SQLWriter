@@ -15,23 +15,20 @@ using SQLWriter.RDBMS.SQLite;
 namespace SQLWriter
 {
 
-	public class SQLWriterFacade
+	public static class SQLWriterFacade
 	{
 		/// <summary>
 		/// Domainを動的に設定するためのアセンブリファイルのパス
 		/// </summary>
-		public static string AssemblyFilePath { get; private set; } =
-			ConfigurationManager.AppSettings["AssemblyFilePath"];
+		public static string AssemblyFilePath { get; private set; }
 		/// <summary>
 		/// Domainを動的に設定するためのアセンブリファイルのファイル名
 		/// </summary>
-		public static string AssemblyFile { get; private set; } =
-			ConfigurationManager.AppSettings["AssemblyFile"];
+		public static string AssemblyFile { get; private set; }
 		/// <summary>
 		/// Domainを動的に設定するためのアセンブリファイル内のエンティティが格納されているnamespace
 		/// </summary>
-		public static string NameSpace { get; private set; } =
-			ConfigurationManager.AppSettings["NameSpace"];
+		public static string NameSpace { get; private set; } 
 
 		/// <summary>
 		/// Domainへの参照を設定する。
@@ -39,7 +36,7 @@ namespace SQLWriter
 		/// <param name="assemblyFilePath">アセンブリファイルのフルパスを設定</param>
 		/// /// <param name="assmblyFile">アセンブリファイル名を設定</param>
 		/// <param name="nameSpace">アセンブリファイル内のDB接続が必要なエンティティが格納されているnamespaceを指定。</param>
-		public static void SetReferenceToDomain(string assemblyFilePath,string assmblyFile, string nameSpace)
+		public static void SetReferenceToDomain(string assemblyFilePath, string assmblyFile, string nameSpace)
 		{
 			AssemblyFilePath = assemblyFilePath;
 			AssemblyFile = assmblyFile;

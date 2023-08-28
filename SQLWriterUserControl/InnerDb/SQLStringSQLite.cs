@@ -28,9 +28,14 @@ namespace SQLWriter.InnerDb
 		internal static string GetSQLWriterSQL(string entityName, EnumDbAction action)
 		{
 			Type type;
-			if (entityName == "SQLStringEntity") type = typeof(SQLStringEntity);
-			else if (entityName == "PropertyEntity") type = typeof(PropertyEntity);
-			else type = typeof(ClassInfoEntity);
+			if (entityName == "SQLStringEntity")
+				type = typeof(SQLStringEntity);
+			else if (entityName == "PropertyEntity")
+				type = typeof(PropertyEntity);
+			else if (entityName == "ClassInfoEntity")
+				type = typeof(ClassInfoEntity);
+			else
+				return null;
 
 			if (action == EnumDbAction.Create)
 				return GetSqlString(type).CreateTable;
